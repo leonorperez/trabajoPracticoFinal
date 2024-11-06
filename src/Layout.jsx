@@ -4,7 +4,7 @@ export const Layout = () => {
   return (
     <div>
       <nav>
-        <ul style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+        <ul className="flex justify-evenly">
           <li>
             <Link to="/">Home</Link>
           </li>
