@@ -2,21 +2,23 @@ import { Outlet, Link } from 'react-router-dom';
 
 export const Layout = () => {
   return (
-    <div>
-      <nav>
-        <ul className="flex justify-evenly">
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/about">About</Link>
-          </li>
-          <li>
-            <Link to="/nothing-here">Nothing Here</Link>
-          </li>
-        </ul>
-      </nav>
-
+    <div className="flex flex-col">
+      <div>
+        <h1 className="text-red-700 p-2">Poke poke</h1>
+        <nav className="h-14">
+          <ul className="flex justify-evenly text-xl font-bold">
+            <li>
+              <Link to="/">Listado de Pokemones</Link>
+            </li>
+            <li>
+              <Link to="/about">About</Link>
+            </li>
+            <li>
+              <Link to="/nothing-here">Nothing Here</Link>
+            </li>
+          </ul>
+        </nav>
+      </div>
       <hr />
 
       {/* An <Outlet> renders whatever child route is currently active,
