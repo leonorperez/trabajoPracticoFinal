@@ -11,10 +11,10 @@ export const Layout = () => {
               <Link to="/">Listado de Pokemones</Link>
             </li>
             <li>
-              <Link to="/about">About</Link>
+              <Link to="/create">Crear Pokemon</Link>
             </li>
             <li>
-              <Link to="/nothing-here">Nothing Here</Link>
+              <Link to="/about">Acerca de....</Link>
             </li>
           </ul>
         </nav>

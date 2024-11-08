@@ -22,6 +22,7 @@ const useGetPokemon = url => {
         image: data.sprites.front_default,
         weight: data.weight,
         types: data.types.map(type => type?.type.name),
+        team: 1,
       };
       return formatedResponse;
     },
