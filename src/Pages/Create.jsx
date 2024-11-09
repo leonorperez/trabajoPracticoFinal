@@ -1,7 +1,7 @@
 export const Create = () => {
   return (
     <div>
-      <h2>Create</h2>
+      <h2>Aca avoy a havser el form</h2>
     </div>
   );
 };
