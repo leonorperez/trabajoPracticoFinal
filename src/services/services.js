@@ -10,13 +10,14 @@ const useGetAllPokemones = () => {
   });
 };
 
-const useGetPokemon = url => {
+const useGetPokemonPokeApi = url => {
   return useQuery({
     queryKey: ['pokemon', url],
     queryFn: async () => {
       const response = await fetch(url);
       const data = await response.json();
       const formatedResponse = {
+        id: data.id,
         name: data.name,
         order: data.order,
         image: data.sprites.front_default,
@@ -47,4 +48,4 @@ const useGetPokemon = url => {
 //     },
 //   });
 // };
-export { useGetAllPokemones, useGetPokemon };
+export { useGetAllPokemones, useGetPokemonPokeApi };
