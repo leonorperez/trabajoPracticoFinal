@@ -1,10 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 
-const useGetAllPokemones = () => {
+const apiKey = 'HzUES4ruMsTus9BLhBsFu85f0gEAzvdy';
+
+const useGetAllPokemones = limit => {
   return useQuery({
-    queryKey: ['getAllPokemones'],
+    queryKey: ['getAllPokeApi'],
     queryFn: async () => {
-      const response = await fetch('https://pokeapi.co/api/v2/pokemon/?limit=40');
+      const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=${limit}`);
+      return await response.json();
+    },
+  });
+};
+
+const useGetAll = () => {
+  return useQuery({
+    queryKey: ['getAllPokeFacu'],
+    queryFn: async () => {
+      const response = await fetch('http://190.185.128.70:3003/pokemon?equipo=1', {
+        headers: {
+          'x-api-key': apiKey,
+        },
+      });
       return await response.json();
     },
   });
@@ -31,21 +47,4 @@ const useGetPokemonPokeApi = url => {
   });
 };
 
-// const useCreatePokemon = () => {
-//   return useMutation({
-//     mutationKey: ["nuevoPokemon"],
-//     mutationFn: async (body) => {
-//       const options = {
-//         url: "http://190.185.128.70:3003/pokemon",
-//         method: "post",
-//         data: body,
-//         headers: {
-//           "x-api-key": "HzUES4ruMsTus9BLhBsFu85f0gEAzvdy",
-//         },
-//       };
-//       const response = await axios.request(options);
-//       return response;
-//     },
-//   });
-// };
-export { useGetAllPokemones, useGetPokemonPokeApi };
+export { useGetAll, useGetAllPokemones, useGetPokemonPokeApi };
