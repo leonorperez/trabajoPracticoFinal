@@ -4,7 +4,11 @@ export const Layout = () => {
   return (
     <div className="flex flex-col">
       <div>
-        <h1 className="text-red-700 p-2">Poke poke</h1>
+        <div className="flex bg-[#756eb4] w-[100%]">
+          <img src="https://i.imgur.com/8eRJVyP.png" alt="pokemon" width="20%" />
+          <img src="https://i.imgur.com/5l82UJl.jpeg" alt="unicaba" width="10%" />
+        </div>
+        <hr />
         <nav className="h-14">
           <ul className="flex justify-evenly text-xl font-bold">
             <li>
