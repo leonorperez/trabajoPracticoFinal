@@ -26,7 +26,7 @@ const useGetAll = () => {
   });
 };
 
-const useCreatePokemon = body => {
+const useCreatePokemon = () => {
   return useMutation({
     mutationKey: ['createPokemon'],
     mutationFn: async body => {

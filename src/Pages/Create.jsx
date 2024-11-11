@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useCreatePokemon } from '../services/services';
 
 export const Create = () => {
   const { mutate: createPokemon } = useCreatePokemon();
+  const navigate = useNavigate();
   const [data, setData] = useState({
-    name: null,
-    order: null,
+    name: '',
+    order: '',
     weight: 0,
-    image: null,
+    image: '',
     types: [],
     team: 1,
   });
@@ -20,21 +22,29 @@ export const Create = () => {
     createPokemon(data, {
       onSuccess: res => {
         setNuevoPokemon(res);
+        navigate('/');
       },
       onError: err => console.log(err?.response?.data?.message),
     });
   };
 
-  function handleInput(event) {
+  const handleInput = event => {
     const field = {
       name: event.target.name,
       value: event.target.value,
     };
-    setData({
-      ...data,
-      [field.name]: field.value,
-    });
-  }
+    if (event.target.name === 'types') {
+      setData({
+        ...data,
+        [field.name]: [field.value],
+      });
+    } else {
+      setData({
+        ...data,
+        [field.name]: field.value,
+      });
+    }
+  };
 
   const PokemonTypesEnum = {
     BUG: 'Bug',
@@ -58,32 +68,70 @@ export const Create = () => {
   };
 
   console.log(nuevoPokemon && nuevoPokemon);
-  // console.log('data ' && data);
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col w-1/3 mx-auto gap-5 p-6 border-2 border-black bg-slate-200"
+      className="flex flex-col w-full max-w-lg mx-auto gap-6 p-8 border-2 border-gray-300 rounded-lg shadow-lg bg-white"
     >
-      <label htmlFor="">
+      <h2 className="text-center text-3xl font-semibold text-gray-800 mb-4">Crear Pokémon</h2>
+
+      <label htmlFor="name" className="text-lg font-medium text-gray-700">
         Nombre
-        <input name="name" type="text" onChange={event => handleInput(event)} />
+        <input
+          name="name"
+          type="text"
+          value={data.name}
+          onChange={handleInput}
+          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
+        />
       </label>
-      <label htmlFor="">
+
+      <label htmlFor="order" className="text-lg font-medium text-gray-700">
         Orden
-        <input name="order" type="number" onChange={event => handleInput(event)} />
+        <input
+          name="order"
+          type="number"
+          value={data.order}
+          onChange={handleInput}
+          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
+        />
       </label>
-      <label htmlFor="">
-        weight
-        <input name="weight" type="number" onChange={event => handleInput(event)} />
+
+      <label htmlFor="weight" className="text-lg font-medium text-gray-700">
+        Peso
+        <input
+          name="weight"
+          type="number"
+          value={data.weight}
+          onChange={handleInput}
+          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
+        />
       </label>
-      <label htmlFor="">
-        image
-        <input name="image" type="text" onChange={event => handleInput(event)} />
+
+      <label htmlFor="image" className="text-lg font-medium text-gray-700">
+        Imagen
+        <input
+          name="image"
+          type="text"
+          value={data.image}
+          onChange={handleInput}
+          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
       </label>
-      <label htmlFor="">
-        types
-        <select name="types">
+
+      <label htmlFor="types" className="text-lg font-medium text-gray-700">
+        Tipos
+        <select
+          name="types"
+          onChange={handleInput}
+          value={data.types} // `data.types` debe ser un array
+          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          required
+        >
           {Object.values(PokemonTypesEnum).map(type => (
             <option key={type} value={type}>
               {type}
@@ -91,7 +139,19 @@ export const Create = () => {
           ))}
         </select>
       </label>
-      <button type="submit">Enviar</button>
+
+      <button
+        type="submit"
+        className="mt-6 py-3 bg-blue-500 text-white rounded-lg font-semibold text-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      >
+        Crear Pokémon
+      </button>
+
+      {nuevoPokemon && (
+        <div className="mt-4 text-center text-green-600 font-semibold">
+          Pokémon creado con éxito: {nuevoPokemon.name}
+        </div>
+      )}
     </form>
   );
 };

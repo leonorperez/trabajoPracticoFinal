@@ -15,13 +15,14 @@ export const Card = ({ link, pokeFacu }) => {
 
   return (
     <Link to={`/pokemon/${finalPokemon.id}`} state={{ pokemon }}>
-      <div className="border rounded-lg p-4 shadow-md  min-w-60 min-h-80 m-2 flex flex-col justify-between">
+      <div className="border rounded-lg p-4 shadow-md  min-w-60 min-h-80 max-h-80 m-2 flex flex-col justify-between">
         <div className="text-center text-lg">{finalPokemon?.name}</div>
 
         <img
           src={finalPokemon.image}
           width="200px"
           height="200px"
+          style={{ maxHeight: '200px' }}
           onError={e => (e.target.src = 'https://i.imgur.com/ygIMkZv.png')}
           alt="Imagen no disponible"
         />
