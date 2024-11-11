@@ -13,7 +13,7 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="create" element={<Create />} />
         <Route path="about" element={<About />} />
-        <Route path="pokemon/:id" element={<Pokemon />} />
+        <Route path="pokemon/:name" element={<Pokemon />} />
         <Route path="*" element={<Default />} />
       </Route>
     </Routes>
