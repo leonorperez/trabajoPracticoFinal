@@ -17,8 +17,6 @@ export const Create = () => {
 
   const handleSubmit = event => {
     event.preventDefault();
-
-    console.log(data);
     createPokemon(data, {
       onSuccess: res => {
         setNuevoPokemon(res);
@@ -29,19 +27,18 @@ export const Create = () => {
   };
 
   const handleInput = event => {
-    const field = {
-      name: event.target.name,
-      value: event.target.value,
-    };
-    if (event.target.name === 'types') {
-      setData({
-        ...data,
-        [field.name]: [field.value],
-      });
+    const { name, value, type } = event.target;
+    if (type === 'checkbox') {
+      setData(prevData => ({
+        ...prevData,
+        types: event.target.checked
+          ? [...prevData.types, value]
+          : prevData.types.filter(type => type !== value),
+      }));
     } else {
       setData({
         ...data,
-        [field.name]: field.value,
+        [name]: type === 'number' ? parseFloat(value) : value,
       });
     }
   };
@@ -121,23 +118,24 @@ export const Create = () => {
         />
       </label>
 
-      <label htmlFor="types" className="text-lg font-medium text-gray-700">
-        Tipos
-        <select
-          name="types"
-          multiple
-          onChange={handleInput}
-          // value={data.types.map}
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        >
+      <fieldset className="text-lg font-medium text-gray-700">
+        <legend>Tipos</legend>
+        <div className="grid grid-cols-2 gap-2 mt-2">
           {Object.values(PokemonTypesEnum).map(type => (
-            <option key={type} value={type}>
-              {type}
-            </option>
+            <label key={type} className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                name="types"
+                value={type}
+                checked={data.types.includes(type)}
+                onChange={handleInput}
+                className="form-checkbox h-5 w-5 text-blue-600"
+              />
+              <span>{type}</span>
+            </label>
           ))}
-        </select>
-      </label>
+        </div>
+      </fieldset>
 
       <button
         type="submit"
