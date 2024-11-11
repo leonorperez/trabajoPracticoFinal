@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 const apiKey = 'HzUES4ruMsTus9BLhBsFu85f0gEAzvdy';
 
@@ -26,6 +26,27 @@ const useGetAll = () => {
   });
 };
 
+const useCreatePokemon = () => {
+  return useMutation({
+    mutationKey: ['createPokemon'],
+    mutationFn: async body => {
+      const options = {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+        body: JSON.stringify(body),
+      };
+      const response = await fetch('http://190.185.128.70:3003/pokemon', options);
+      if (!response.ok) {
+        throw new Error('Failed to create pokemon');
+      }
+      return response.json();
+    },
+  });
+};
+
 const useGetPokemonPokeApi = url => {
   return useQuery({
     queryKey: ['pokemon', url],
@@ -47,4 +68,4 @@ const useGetPokemonPokeApi = url => {
   });
 };
 
-export { useGetAll, useGetAllPokemones, useGetPokemonPokeApi };
+export { useGetAll, useGetAllPokemones, useGetPokemonPokeApi, useCreatePokemon };
