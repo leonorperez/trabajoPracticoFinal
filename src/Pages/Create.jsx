@@ -67,8 +67,6 @@ export const Create = () => {
     WATER: 'Water',
   };
 
-  console.log(nuevoPokemon && nuevoPokemon);
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -127,8 +125,9 @@ export const Create = () => {
         Tipos
         <select
           name="types"
+          multiple
           onChange={handleInput}
-          value={data.types} // `data.types` debe ser un array
+          // value={data.types.map}
           className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           required
         >
