@@ -21,7 +21,8 @@ const useGetAll = () => {
           'x-api-key': apiKey,
         },
       });
-      return await response.json();
+      const data = await response.json();
+      return data.reverse();
     },
   });
 };

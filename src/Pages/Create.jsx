@@ -1,154 +1,175 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useCreatePokemon } from '../services/services';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 export const Create = () => {
-  const { mutate: createPokemon } = useCreatePokemon();
+  const { mutate } = useCreatePokemon();
   const navigate = useNavigate();
-  const [data, setData] = useState({
-    name: '',
-    order: '',
-    weight: 0,
-    image: '',
-    types: [],
-    team: 1,
-  });
-  const [nuevoPokemon, setNuevoPokemon] = useState(null);
+  const [selectedTypes, setSelectedTypes] = useState([]);
 
-  const handleSubmit = event => {
-    event.preventDefault();
-    createPokemon(data, {
-      onSuccess: res => {
-        setNuevoPokemon(res);
-        navigate('/');
-      },
-      onError: err => console.log(err?.response?.data?.message),
-    });
-  };
+  const pokemonTypes = [
+    'Normal',
+    'Fire',
+    'Water',
+    'Electric',
+    'Grass',
+    'Ice',
+    'Fighting',
+    'Poison',
+    'Ground',
+    'Flying',
+    'Psychic',
+    'Bug',
+    'Rock',
+    'Ghost',
+    'Dragon',
+    'Dark',
+    'Steel',
+    'Fairy',
+  ];
 
-  const handleInput = event => {
-    const { name, value, type } = event.target;
-    if (type === 'checkbox') {
-      setData(prevData => ({
-        ...prevData,
-        types: event.target.checked
-          ? [...prevData.types, value]
-          : prevData.types.filter(type => type !== value),
-      }));
-    } else {
-      setData({
-        ...data,
-        [name]: type === 'number' ? parseFloat(value) : value,
-      });
+  const handleTypeClick = type => {
+    if (selectedTypes.includes(type)) {
+      setSelectedTypes(selectedTypes.filter(t => t !== type));
+    } else if (selectedTypes.length < 2) {
+      setSelectedTypes([...selectedTypes, type]);
     }
   };
 
-  const PokemonTypesEnum = {
-    BUG: 'Bug',
-    DARK: 'Dark',
-    DRAGON: 'Dragon',
-    ELECTRIC: 'Electric',
-    FAIRY: 'Fairy',
-    FIGHTING: 'Fighting',
-    FIRE: 'Fire',
-    FLYING: 'Flying',
-    GHOST: 'Ghost',
-    GRASS: 'Grass',
-    GROUND: 'Ground',
-    ICE: 'Ice',
-    NORMAL: 'Normal',
-    POISON: 'Poison',
-    PSYCHIC: 'Psychic',
-    ROCK: 'Rock',
-    STEEL: 'Steel',
-    WATER: 'Water',
+  const handleSubmit = e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const pokemon = {
+      name: formData.get('name'),
+      image: formData.get('image'),
+      types: selectedTypes,
+      weight: Number(formData.get('weight')),
+      order: Number(formData.get('order')),
+      team: 1,
+    };
+    mutate(pokemon, {
+      onSuccess: () => {
+        navigate('/');
+      },
+    });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex flex-col w-full max-w-lg mx-auto gap-6 p-8 border-2 border-gray-300 rounded-lg shadow-lg bg-white"
-    >
-      <h2 className="text-center text-3xl font-semibold text-gray-800 mb-4">Crear Pokémon</h2>
-
-      <label htmlFor="name" className="text-lg font-medium text-gray-700">
-        Nombre
-        <input
-          name="name"
-          type="text"
-          value={data.name}
-          onChange={handleInput}
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-      </label>
-
-      <label htmlFor="order" className="text-lg font-medium text-gray-700">
-        Orden
-        <input
-          name="order"
-          type="number"
-          value={data.order}
-          onChange={handleInput}
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-      </label>
-
-      <label htmlFor="weight" className="text-lg font-medium text-gray-700">
-        Peso
-        <input
-          name="weight"
-          type="number"
-          value={data.weight}
-          onChange={handleInput}
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-          required
-        />
-      </label>
-
-      <label htmlFor="image" className="text-lg font-medium text-gray-700">
-        Imagen
-        <input
-          name="image"
-          type="text"
-          value={data.image}
-          onChange={handleInput}
-          className="mt-2 p-3 border border-gray-300 rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-        />
-      </label>
-
-      <fieldset className="text-lg font-medium text-gray-700">
-        <legend>Tipos</legend>
-        <div className="grid grid-cols-2 gap-2 mt-2">
-          {Object.values(PokemonTypesEnum).map(type => (
-            <label key={type} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                name="types"
-                value={type}
-                checked={data.types.includes(type)}
-                onChange={handleInput}
-                className="form-checkbox h-5 w-5 text-blue-600"
-              />
-              <span>{type}</span>
-            </label>
-          ))}
+    <div className="min-h-[calc(100vh-20vh)] bg-gradient-to-b from-gray-100 to-gray-200 py-2 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl mt-8 overflow-hidden">
+        <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
+          <h1 className="text-3xl font-bold text-white">Crear Nuevo Pokémon</h1>
         </div>
-      </fieldset>
 
-      <button
-        type="submit"
-        className="mt-6 py-3 bg-blue-500 text-white rounded-lg font-semibold text-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-      >
-        Crear Pokémon
-      </button>
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-full bg-gray-50 rounded-xl p-4 aspect-square flex items-center justify-center">
+                <img
+                  id="preview"
+                  src="https://i.imgur.com/ygIMkZv.png"
+                  alt="Preview"
+                  className="max-w-[200px] max-h-[200px] object-contain"
+                />
+              </div>
+              <div className="w-full">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  URL de Imagen
+                </label>
+                <input
+                  type="text"
+                  name="image"
+                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  onChange={e => {
+                    const preview = document.getElementById('preview');
+                    preview.src = e.target.value || 'https://i.imgur.com/ygIMkZv.png';
+                  }}
+                />
+              </div>
+            </div>
 
-      {nuevoPokemon && (
-        <div className="mt-4 text-center text-green-600 font-semibold">
-          Pokémon creado con éxito: {nuevoPokemon.name}
-        </div>
-      )}
-    </form>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                <input
+                  type="text"
+                  name="name"
+                  required
+                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Tipos (selecciona hasta 2)
+                </label>
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                  {pokemonTypes.map(type => (
+                    <button
+                      key={type}
+                      type="button"
+                      onClick={() => handleTypeClick(type)}
+                      className={`p-2 rounded-lg text-sm font-medium transition-colors
+                        ${
+                          selectedTypes.includes(type)
+                            ? 'bg-blue-500 text-white'
+                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        }
+                        ${
+                          selectedTypes.length >= 2 && !selectedTypes.includes(type)
+                            ? 'opacity-50 cursor-not-allowed'
+                            : ''
+                        }`}
+                    >
+                      {type}
+                    </button>
+                  ))}
+                </div>
+                {selectedTypes.length === 0 && (
+                  <p className="text-red-500 text-sm mt-1">Selecciona al menos un tipo</p>
+                )}
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Peso</label>
+                <input
+                  type="number"
+                  name="weight"
+                  required
+                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Orden</label>
+                <input
+                  type="number"
+                  name="order"
+                  required
+                  className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-4 mt-6">
+            <button
+              type="button"
+              onClick={() => navigate('/')}
+              className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              disabled={selectedTypes.length === 0}
+              className="px-4 py-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Crear Pokémon
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   );
 };

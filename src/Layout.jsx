@@ -2,7 +2,7 @@ import { Outlet, Link } from 'react-router-dom';
 
 export const Layout = () => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col z-auto">
       <div className="sticky top-0 bg-white border-b border-gray-200 shadow-sm">
         <div className="flex bg-[#756eb4] w-[100%] items-center justify-between">
           <img src="https://i.imgur.com/8eRJVyP.png" alt="pokemon" width="15%" />

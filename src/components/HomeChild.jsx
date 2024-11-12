@@ -1,10 +1,12 @@
 import { Card } from './Card';
+import { Loading } from '../components/Loading';
 import { useGetAllPokemones } from '../services/services';
+
 export const HomeChild = ({ pokeFacus }) => {
   const { data: allPokemones, isLoading } = useGetAllPokemones(40 - pokeFacus?.length);
 
   if (isLoading) {
-    return '...loading';
+    return <Loading />;
   }
 
   return (

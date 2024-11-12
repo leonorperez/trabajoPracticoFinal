@@ -12,10 +12,20 @@ export const Pokemon = () => {
   const handleBack = () => {
     navigate('/');
   };
-
-  return (
+  //i.imgur.com/oTTN3C2.png
+  https: return (
     <div className="min-h-[calc(100vh-20vh)] bg-gradient-to-b from-gray-100 to-gray-200 py-2 px-4 sm:px-6 lg:px-8">
-      <button onClick={handleBack}>VOLVER</button>
+      <button
+        onClick={handleBack}
+        className="hover:scale-110 transition-transform duration-300 flex items-center"
+      >
+        <img
+          src="https://i.imgur.com/oTTN3C2.png"
+          alt="Volver"
+          className="w-10 h-10 object-contain mr-2"
+        />
+        VOLVER
+      </button>
       <div className="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl mt-8 overflow-hidden">
         <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-6 py-4">
           <div className="flex justify-between items-center">
