@@ -15,6 +15,9 @@ export const Layout = () => {
               <Link to="/">Listado de Pokemones</Link>
             </li>
             <li>
+              <Link to="/searcher">Busca un Pokemon</Link>
+            </li>
+            <li>
               <Link to="/create">Crear Pokemon</Link>
             </li>
             <li>

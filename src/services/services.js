@@ -12,6 +12,35 @@ const useGetAllPokemones = limit => {
   });
 };
 
+const useGetPokemonByNamePokeApi = name => {
+  return useQuery({
+    queryKey: ['pokemon', name],
+    queryFn: async () => {
+      try {
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+        if (!response.ok) {
+          throw new Error('Pokemon not found');
+        }
+        const data = await response.json();
+        const formatedResponse = {
+          id: data.id,
+          name: data.name,
+          order: data.order,
+          image: data.sprites.front_default,
+          weight: data.weight,
+          types: data.types.map(type => type?.type.name),
+          team: 1,
+        };
+        return formatedResponse;
+      } catch (error) {
+        throw new Error('Pokemon not found');
+      }
+    },
+    enabled: !!name,
+    retry: false,
+  });
+};
+
 const useGetAll = () => {
   return useQuery({
     queryKey: ['getAllPokeFacu'],
@@ -69,4 +98,10 @@ const useGetPokemonPokeApi = url => {
   });
 };
 
-export { useGetAll, useGetAllPokemones, useGetPokemonPokeApi, useCreatePokemon };
+export {
+  useGetAll,
+  useGetAllPokemones,
+  useGetPokemonPokeApi,
+  useCreatePokemon,
+  useGetPokemonByNamePokeApi,
+};

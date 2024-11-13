@@ -12,8 +12,7 @@ export const Pokemon = () => {
   const handleBack = () => {
     navigate('/');
   };
-  //i.imgur.com/oTTN3C2.png
-  https: return (
+  return (
     <div className="min-h-[calc(100vh-20vh)] bg-gradient-to-b from-gray-100 to-gray-200 py-2 px-4 sm:px-6 lg:px-8">
       <button
         onClick={handleBack}
